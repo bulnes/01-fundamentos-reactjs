@@ -28,10 +28,10 @@ export function Comment() {
         </div>
 
         <footer>
-            <button>
-                <ThumbsUp size={20} />
-                Aplaudir <span>03</span>
-            </button>
+          <button>
+            <ThumbsUp size={20} />
+            Aplaudir <span>03</span>
+          </button>
         </footer>
       </div>
     </div>
