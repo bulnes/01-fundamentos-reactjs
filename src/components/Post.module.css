@@ -101,7 +101,7 @@
   max-height: 0;
 }
 
-.commentForm:focus-within footer {
+.commentForm:focus-within footer { /* When any element in container is focused, the footer will be visible */
   visibility: visible;
   max-height: none;
 }
