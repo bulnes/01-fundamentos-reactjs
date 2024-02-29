@@ -1,44 +1,56 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-export function Post(props) {
-  console.log(props)
+export function Post({ author, publishedAt, content }) {
+  const publishedDateTitle = format(publishedAt, "dd 'de' MMMM 'às' HH:mm'h'", {
+    locale: ptBR,
+  });
+
+  const publsishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBR,
+    addSuffix: true,
+  });
 
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src="https://github.com/bulnes.png" hasBorder />
+          <Avatar src={author.avatarUrl} hasBorder />
 
           <div className={styles.authorInfo}>
-            <strong>John Doe</strong>
-            <span>Web Developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time className={styles.date} dateTime="2021-09-10">
-          Publicado há 1h
+        <time
+          className={styles.date}
+          title={publishedDateTitle}
+          dateTime={publishedAt.toISOString()}
+        >
+          Publicado {publsishedDateRelativeToNow}
         </time>
       </header>
 
       <div className={styles.content}>
-        <p>Fala galeraa 👋</p>
+        {content.map(({ type, content }, index) => {
+          if (type === "paragraph") {
+            return <p key={index}>{content}</p>;
+          }
 
-        <p>
-          Acabei de subir mais um projeto no meu portifa. É um projeto que fiz
-          no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀
-        </p>
-
-        <p>
-          👉 <a href="">jane.design/doctorcare</a>
-        </p>
-
-        <p>
-          <a href="">#novoprojeto</a> <a href="">#nlw</a>
-          {""}
-          <a href="">#rocketseat</a>
-        </p>
+          if (type === "link") {
+            return (
+              <p key={index}>
+                <a href={content} target="_blank" rel="noreferrer">
+                  {content}
+                </a>
+              </p>
+            );
+          }
+        })}
       </div>
 
       <form className={styles.commentForm}>
