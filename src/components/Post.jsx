@@ -28,7 +28,12 @@ export function Post({ author, publishedAt, content }) {
   }
 
   function handleNewCommentChange(e) {
+    e.target.setCustomValidity("");
     setNewCommentText(e.target.value);
+  }
+
+  function handleNewCommentInvalid(e) {
+    e.target.setCustomValidity("O comentário não pode ser vazio.");
   }
 
   function deleteComment(commentToDelete) {
@@ -82,7 +87,8 @@ export function Post({ author, publishedAt, content }) {
           placeholder="Deixe um comentário" 
           name="comment" 
           value={newCommentText} 
-          onChange={handleNewCommentChange} 
+          onChange={handleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
         />
 
         <footer>
