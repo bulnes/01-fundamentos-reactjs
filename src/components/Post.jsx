@@ -31,6 +31,10 @@ export function Post({ author, publishedAt, content }) {
     setNewCommentText(e.target.value);
   }
 
+  function deleteComment() {
+    console.log("deletar comentário");
+  }
+
   return (
     <article className={styles.post}>
       <header>
@@ -87,7 +91,13 @@ export function Post({ author, publishedAt, content }) {
 
       <div className={styles.commentList}>
         {comments.map((comment, key) => {
-          return <Comment key={key} content={comment} />;
+          return (
+            <Comment 
+              key={key} 
+              content={comment} 
+              onDeleteComment={deleteComment}
+            />
+          );
         })}
       </div>
     </article>
