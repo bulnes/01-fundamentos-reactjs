@@ -4,25 +4,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
-
-
-
-interface Author {
-  avatarUrl: string;
-  name: string;
-  role: string;
-}
-
-interface Content {
-  type: string; 
-  content: string;
-}
-
-interface PostProps {
-  author: Author;
-  publishedAt: Date;
-  content: Content[];
-}
+import { PostProps } from "../interfaces/PostType";
 
 export function Post({ author, publishedAt, content }: PostProps) {
   const [comments, setComments] = useState<string[]>([]);
@@ -53,7 +35,9 @@ export function Post({ author, publishedAt, content }: PostProps) {
   }
 
   function deleteComment(commentToDelete: string) {
-    const commentsWithoutDeleted = comments.filter(comment => comment !== commentToDelete);
+    const commentsWithoutDeleted = comments.filter(
+      (comment) => comment !== commentToDelete
+    );
     setComments(commentsWithoutDeleted);
   }
 
@@ -102,10 +86,10 @@ export function Post({ author, publishedAt, content }: PostProps) {
       <form onSubmit={handleCreationNewComment} className={styles.commentForm}>
         <strong>Deixe seu feedback:</strong>
 
-        <textarea 
-          placeholder="Deixe um comentário" 
-          name="comment" 
-          value={newCommentText} 
+        <textarea
+          placeholder="Deixe um comentário"
+          name="comment"
+          value={newCommentText}
           onChange={handleNewCommentChange}
           onInvalid={handleNewCommentInvalid}
         />
@@ -120,9 +104,9 @@ export function Post({ author, publishedAt, content }: PostProps) {
       <div className={styles.commentList}>
         {comments.map((comment, key) => {
           return (
-            <Comment 
-              key={key} 
-              content={comment} 
+            <Comment
+              key={key}
+              content={comment}
               onDeleteComment={deleteComment}
             />
           );
