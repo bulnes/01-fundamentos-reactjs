@@ -1,15 +1,32 @@
 import { format, formatDistanceToNow } from "date-fns";
-import ptBR from "date-fns/locale/pt-BR";
-import { useState } from "react";
+import { ptBR } from "date-fns/locale";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-export function Post({ author, publishedAt, content }) {
-  const [comments, setComments] = useState([]);
-  const [newCommentText, setNewCommentText] = useState("");
 
-  // Muito bom Devon, parabéns!! 👏👏
+
+interface Author {
+  avatarUrl: string;
+  name: string;
+  role: string;
+}
+
+interface Content {
+  type: string; 
+  content: string;
+}
+
+interface PostProps {
+  author: Author;
+  publishedAt: Date;
+  content: Content[];
+}
+
+export function Post({ author, publishedAt, content }: PostProps) {
+  const [comments, setComments] = useState<string[]>([]);
+  const [newCommentText, setNewCommentText] = useState("");
 
   const publishedDateTitle = format(publishedAt, "dd 'de' MMMM 'às' HH:mm'h'", {
     locale: ptBR,
@@ -17,26 +34,25 @@ export function Post({ author, publishedAt, content }) {
 
   const publsishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
     locale: ptBR,
-    addSuffix: true,
   });
 
-  function handleCreationNewComment(e) {
+  function handleCreationNewComment(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setComments([...comments, newCommentText]);
     setNewCommentText("");
   }
 
-  function handleNewCommentChange(e) {
+  function handleNewCommentChange(e: ChangeEvent<HTMLTextAreaElement>) {
     e.target.setCustomValidity("");
     setNewCommentText(e.target.value);
   }
 
-  function handleNewCommentInvalid(e) {
+  function handleNewCommentInvalid(e: ChangeEvent<HTMLTextAreaElement>) {
     e.target.setCustomValidity("O comentário não pode ser vazio.");
   }
 
-  function deleteComment(commentToDelete) {
+  function deleteComment(commentToDelete: string) {
     const commentsWithoutDeleted = comments.filter(comment => comment !== commentToDelete);
     setComments(commentsWithoutDeleted);
   }
